@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Camera{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="d-flex justify-content-between align-items-center px-3 py-2 bg-white">
+        <div>
+            <a href="{{ url_for('home') }}" class="text-dark">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <div>
+            <span class="font-weight-bold">Meal Time</span>
+        </div>
+        <div>
+            <a href="#" class="text-dark" id="submit-photo">
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </header>
+    <div class="camera-content">
+        <div class="image-preview">
+            <img src="#" alt="Selected meal image" id="preview-image">
+        </div>
+        <div class="image-input">
+            <input type="file" accept="image/*" id="image-input" style="display:none">
+            <label for="image-input" class="camera-icon">
+                <i class="fas fa-camera"></i>
+            </label>
+        </div>
+        <div class="gallery-thumbnails">
+            <!-- Add gallery thumbnails here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Camera{% endblock %}
+
+{% block content %}
+<!-- The rest of the camera.html content -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+{% endblock %}

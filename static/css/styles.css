@@ -1,0 +1,68 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Emerald green color scheme */
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #29805c;
+  --light-color: #a8e6cf;
+  --dark-color: #004c39;
+  --text-color: #ffffff;
+}
+
+/* Header */
+header {
+  background-color: var(--primary-color);
+  padding: 20px 0;
+}
+
+header h1 {
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Main content */
+main {
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* CTA button */
+.cta-button {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: var(--dark-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-color);
+  padding: 20px 0;
+  text-align: center;
+}
+
+footer p {
+  color: var(--text-color);
+  margin: 0;
+}

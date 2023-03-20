@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div id="meal-container">
+        {% for meal in winning_meals %}
+        <div class="meal">
+            <img src="{{ meal.image_url }}" alt="{{ meal.title }}" />
+            <h3>{{ meal.title }}</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

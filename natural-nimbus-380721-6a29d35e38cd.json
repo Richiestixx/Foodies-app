@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "natural-nimbus-380721",
+  "private_key_id": "6a29d35e38cdbd7b88bf30afa3088372dd6d930d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDs8vxrPiz83fFF\nqwjYcUs/Z/GMFj50fyfOSVEjbX5yi78Lw2dfGNjDv8LYbYq6Hh3iwwK+avFmOuZh\nfRUko4+IBdOmL9UQR/5HUZRh9x33hXDZQNiK0i+jQGNXBYNU3BdteTGzq03jZmxb\nsToVTUL6nGWHv3rZj4eKNEu3dtVIVrEVsQZzvW1m4UOJOVoejiLOOiF7SRAoxuUO\nWzwQqhF92bdJD9a6jyD8jf0xD7LwCrC7Rj/B9Do40LK/kXjm15EaT26ZbKSs9fBZ\nj3EHi1oQJiZ6NGgbBpG9VvW6ZovsjzskzTsCvppfKp+bK+rto9RQVaxg99G5pjoJ\n052yBXedAgMBAAECggEADa6VMTsYnWxSYXe4Dcly8yEVI0XoitEJ0yFMKFvK9KHJ\noQwCNM1KPPlebqFapJcXGjAxAR5LPKAzi9cNaL1yDQRrHXo/Fw7VKbiV9RcwGYoQ\nw1a5ekCbRBW0dsKoe/aueqGII2wFlhcktCG2bSL2NmLgAPfnR9dAGBSfd6NKuv+8\nDadwIAO30wiRwwljpZ8A9c2tKL+XUmzuBwKQga2prvXddk4fCG7vFOL8FPD1N+X/\n/AaeGEEDDEsoHYdUB6DvwIUFtDlsSx84Gzp2bdldD4KFdMjko2aoMVkNrlFohUB0\neKxr59SWvSkdaq7Y2n0XVpYJqbqvBE2Q4jXjfsfoAQKBgQD4zfQcxavxsh0+6x02\nGbUiJgCT207RdZZ/ZOfhrkG2gvyI17K4ZDbwtqAVUEVZr0qRup8+fCOtNqPErGlQ\nNjO8LYkE6wG4LH6ueIr+p9bwiAWrrIhARUKosoRobV4Nsu32t8M+6GNVblCx80ZX\n+JeDlCKk2oVyVzvKiyobZa/YAQKBgQDzzUKnDJE/t+smWaxFXn0ymFFvj2L6OKj3\npvD+IPrTDFkRi5bEKGEeANJS+J310aOzGdg6bYAYkHGq1hc50zGht7ybA7KDEW+3\nSXq4VeA4kATy7U75fhs0a2zbYFdDnQ72Lm/xbmTE7rJH6bwrptU6JTcwmpDU7NYn\nVCBe9QX/nQKBgQDS9FUJXDT4vit74H+pEkz5Qj11IBqJEGllZJoTSNugsxkJsdFv\n9FB88mtzBtd2PmE8hH5mzXy2bcCXjhPRFdPxtq4ZhGS10swqhDxdxNNCqCIeuC/i\nRpdJT+tiW3DGrrKDYLXkDcfDdMBo0TsQdc+Jmb1yB3HkS8B/cFVoW2SoAQKBgQDg\nO/jC1h89wLYp9q4ou0hhYZD9D59UTwqxhL0Ar2qi9CdzqLSJRC5WvyCzKXF3Z1Kt\n5uZmjtITRb8WBoUkLSfn+qsg1By6yi27IX0az/lDbMrwd+18MU1qQCfF+e0pBep9\n6KYTI5rROk2FMOheKbrSGOqS7IarIA2z7H89dxUGTQKBgQCFPRDu8GsvogS+UX/1\nNOBqRqn0hoT9Sfp/x4Jp1vZrT+3oBfe4bDwCzZ3BQrdmdm/pklPChma5FbGJx58o\nEC9mJwAbZEF2V6ccf+fg6eIuj3vz0g3LxSEAIo6KZAX3tbnDcxffaVlHDMrn437J\nTJVcF5Ed7uiqsBC/FAHMzDCsyw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "foodies-app@natural-nimbus-380721.iam.gserviceaccount.com",
+  "client_id": "107908378773732096320",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/foodies-app%40natural-nimbus-380721.iam.gserviceaccount.com"
+}

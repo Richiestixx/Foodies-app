@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <h1 class="logo">Foodies</h1>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="cta-button">Get Started</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="hero container">
+            <h2>Welcome to Foodies!</h2>
+            <p>The social app that helps you lose weight and eat healthier with friends from around the world.</p>
+            <a href="#" class="cta-button">Join Foodies Today</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="features container">
+            <h2>Why Choose Foodies?</h2>
+            <!-- Add feature cards or list items here -->
+            <!-- Feature 1 -->
+            <div class="feature">
+                <h3>Connect with a Sponsor</h3>
+                <p>Team up with a sponsor who will support and motivate you on your journey to healthier eating and weight loss.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="feature">
+                <h3>Share Meals & Recipes</h3>
+                <p>Discover and share delicious, healthy recipes with the Foodies community, and track your meals with ease.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="feature">
+                <h3>Compete & Improve</h3>
+                <p>Participate in friendly competitions, earn rewards, and climb the leaderboards as you make progress toward your goals.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Foodies. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/scripts.js"></script>
+</body>
+</html>

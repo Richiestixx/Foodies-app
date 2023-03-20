@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Foodies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="#">Recipes</a></li>
+                <li><a href="#">Leaderboards</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Your Progress</h2>
+            <li><a href="#">progress bar</a></li>
+            <li><a href="#">charts</a></li>
+            <li><a href="#">stats</a></li>
+        </section>
+
+        <section>
+            <h2>Interact with Your Sponsor</h2>
+            <!-- Add features for interacting with the sponsor, such as a messaging system or shared meal photos -->
+        </section>
+
+        <section>
+            <h2>Access Other Features</h2>
+            <!-- Add links to other app features, such as meal tracking, recipes, and leaderboards -->
+        </section>
+
+        <!-- Add the new section with the form here -->
+        <section>
+            <h2>Find a Match</h2>
+            <form action="{{ url_for('match') }}" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <button type="submit">Find a Match</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

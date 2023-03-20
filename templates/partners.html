@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Partner Recommendations</h1>
+    <ul>
+    {% for partner in recommendations %}
+        <li>{{ partner.name }}</li>
+    {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+{% endblock %}
