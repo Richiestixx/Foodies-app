@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Meal Comparison Result{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Meal Comparison Result</h1>
+
+    <div class="row">
+        <!-- User's Meal -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Your Meal
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Your Food Items:</h5>
+                    {% if user_food_items %}
+                        <ul>
+                            {% for item in user_food_items %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No food items recorded for you.</p>
+                    {% endif %}
+                    <!-- Optional: Display user image if user_image_filename is available
+                    {% if user_image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + user_image_filename) }}" alt="Your Meal Image" class="img-fluid mt-3">
+                    {% endif %}
+                    -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Opponent's Meal -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Opponent's Meal
+                </div>
+                {% if opponent_image_url %}
+                    <img src="{{ url_for('static', filename=opponent_image_url.replace('static/', '')) }}" alt="Opponent's Meal" class="card-img-top" style="max-height: 300px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Opponent's Food Items:</h5>
+                    {% if opponent_food_items %}
+                        <ul>
+                            {% for item in opponent_food_items %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No food items recorded for the opponent.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 p-3 text-center">
+        <h2>Comparison Outcome:</h2>
+        {% if winner == "User 1" %}
+            <div class="alert alert-success" role="alert">
+                <strong>Congratulations! Your meal was determined to be healthier!</strong>
+            </div>
+        {% elif winner == "User 2" %}
+            <div class="alert alert-warning" role="alert">
+                <strong>The opponent's meal was determined to be healthier this time.</strong>
+            </div>
+        {% elif winner == "Tie" %}
+            <div class="alert alert-info" role="alert">
+                <strong>It's a tie! Both meals are similarly healthy.</strong>
+            </div>
+        {% else %}
+            <div class="alert alert-secondary" role="alert">
+                <strong>Winner: {{ winner }}</strong> (Could not determine a clear winner or draw)
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('camera') }}" class="btn btn-primary">Submit Another Meal</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+</div>
+{% endblock %}
