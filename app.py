@@ -1,17 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
+import io
 import openai
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from google.cloud import vision
 from sqlalchemy.orm import relationship
 
+OPPONENT_MEAL_DATA = {
+    "food_items": ["grilled chicken salad", "avocado", "mixed greens", "cherry tomatoes"],
+    "image_url": "static/Images/logo.png" # Placeholder, can be updated later
+}
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = "my_super_secret_testing_key_123"
 openai.api_key = os.getenv("MY_GPT3_API_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///foodies.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/foodies.db' # Corrected path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -33,7 +39,8 @@ class User(UserMixin, db.Model):
     gender = db.Column(db.String(10), nullable=False)
     goal = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    submitted_meal = db.Column(db.Boolean, nullable=False)
+    food_items = db.Column(db.String(255), nullable=True)
+    submitted_meal = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return f'<User {self.name}>'
@@ -65,6 +72,39 @@ def load_user(user_id):
 
 migrate = Migrate(app, db)
 
+# Placeholder functions for Google Vision API and GPT-3
+def get_image_labels(image_content):
+    """Placeholder for Google Vision API call."""
+    print("Mock get_image_labels called")
+    # Simulate some labels for testing
+    return ["apple", "banana", "fruit salad"]
+
+def filter_food_labels(labels):
+    """Placeholder for filtering labels to food items."""
+    print("Mock filter_food_labels called")
+    return [label for label in labels if label in ["apple", "banana", "orange"]] # Example filter
+
+def generate_gpt3_response(prompt):
+    """Placeholder for OpenAI GPT-3 call."""
+    print(f"Mock generate_gpt3_response called with prompt: {prompt}")
+    # Simulate a response for testing
+    if "User 1 meal: apple, banana" in prompt and "User 2 meal: grilled chicken salad, avocado, mixed greens, cherry tomatoes" in prompt:
+        return "User 2" # Simulate opponent's meal as healthier
+    return "Tie" # Default response
+
+def compare_meals(user1_food_items, user2_food_items):
+    prompt = f"Compare the following meals and determine which one is healthier:\n\nUser 1 meal: {', '.join(user1_food_items)}\nUser 2 meal: {', '.join(user2_food_items)}\n\nHealthier meal:"
+
+    gpt3_response = generate_gpt3_response(prompt)
+    healthier_meal = gpt3_response.strip()
+
+    if "User 1" in healthier_meal:
+        return "User 1"
+    elif "User 2" in healthier_meal:
+        return "User 2"
+    else:
+        return "Tie"
+
 @app.route('/')
 def landing():
     return render_template('landing.html')
@@ -90,7 +130,7 @@ def signup():
             return render_template('signup.html', error=error_msg)
 
         hashed_password = generate_password_hash(password)
-        new_user = User(name=name, email=email, age=age, gender=gender, goal=goal, password=hashed_password)
+        new_user = User(name=name, email=email, age=age, gender=gender, goal=goal, password=hashed_password, submitted_meal=False) # Ensure submitted_meal is initialized
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -102,10 +142,13 @@ def signup():
 def login():
     if request.method == 'POST':
         email = request.form['email']
+        password = request.form['password'] # Added password field
         user = User.query.filter_by(email=email).first()
-        if user:
+        if user and check_password_hash(user.password, password): # Added password check
             login_user(user)
             return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid email or password.') # Added error message
     return render_template('login.html')
 
 @app.route('/logout')
@@ -133,21 +176,6 @@ def match():
     partner_recommendations = gpt3_matching_algorithm(user_data)
     return render_template('partners.html', recommendations=partner_recommendations)
 
-def gpt3_matching_algorithm(user_data):
-    prompt = f"Find a suitable partner for a user with the following information:\n\n"
-    for key, value in user_data.items():
-        prompt += f"{key.capitalize()}: {value}\n"
-    prompt += "\nRecommendations:\n"
-
-    gpt3_response = generate_gpt3_response(prompt)
-
-    recommendations = gpt3_response.split("\n")[1:]
-    partner_recommendations = []
-    for recommendation in recommendations:
-        partner_recommendations.append({"name": recommendation})
-
-    return partner_recommendations
-
 @app.route('/submit_photo', methods=['POST'])
 @login_required
 def submit_photo():
@@ -155,60 +183,61 @@ def submit_photo():
         return jsonify({"error": "No image file found in request"}), 400
 
     image = request.files['image']
-    image_content = io.BytesIO(image.read()).getvalue()
+    image_content = io.BytesIO(image.read()).getvalue() # Read image content
 
-    labels = get_image_labels(image_content)
-    food_items = filter_food_labels(labels)
+    # Simulate image processing
+    labels = get_image_labels(image_content) # This will now call our placeholder
+    food_items = filter_food_labels(labels) # This will now call our placeholder
 
-    # Save the food items for the user
-    # Add your code to save the food items for the user
+    # Convert the food_items list to a comma-separated string for DB storage
+    food_items_str = ", ".join(food_items)
 
-    return jsonify({"success": True, "food_items": food_items})
+    # Save to database
+    current_user.food_items = food_items_str
+    current_user.submitted_meal = True
+    db.session.commit()
+
+    # Call compare_meals with the list of food items
+    winner = compare_meals(food_items, OPPONENT_MEAL_DATA["food_items"])
+
+    # Store results in the session
+    session['user_food_items'] = food_items
+    session['opponent_food_items'] = OPPONENT_MEAL_DATA["food_items"]
+    session['winner'] = winner
+    session['opponent_image_url'] = OPPONENT_MEAL_DATA["image_url"]
+    # session['user_image_filename'] = image.filename # Store filename if needed later
+
+    return redirect(url_for('comparison_result'))
+
+@app.route('/comparison_result')
+@login_required
+def comparison_result():
+    user_food_items = session.get('user_food_items', [])
+    opponent_food_items = session.get('opponent_food_items', [])
+    winner = session.get('winner', 'Unknown')
+    opponent_image_url = session.get('opponent_image_url', '')
+    user_image_filename = session.get('user_image_filename', None) 
+
+    return render_template('comparison_result.html',
+                           user_food_items=user_food_items,
+                           opponent_food_items=opponent_food_items,
+                           winner=winner,
+                           opponent_image_url=opponent_image_url,
+                           user_image_filename=user_image_filename)
 
 @app.route('/home')
 @login_required
 def home():
-    # Fetch the winning meals from the user's friends' games here
-    # For now, let's assume you have a function named `get_winning_meals()`
     winning_meals = get_winning_meals(current_user)
     return render_template('home.html', winning_meals=winning_meals)
 
-def compare_meals(user1_food_items, user2_food_items):
-    prompt = f"Compare the following meals and determine which one is healthier:\n\nUser 1 meal: {', '.join(user1_food_items)}\nUser 2 meal: {', '.join(user2_food_items)}\n\nHealthier meal:"
-
-    gpt3_response = generate_gpt3_response(prompt)
-    healthier_meal = gpt3_response.strip()
-
-    if "User 1" in healthier_meal:
-        return "User 1"
-    elif "User 2" in healthier_meal:
-        return "User 2"
-    else:
-        return "Tie"
-
-def check_and_compare_meals(user1, user2):
-    if user1.submitted_meal and user2.submitted_meal:
-        winner = compare_meals(user1.food_items.split(', '), user2.food_items.split(', '))
-        # Do something with the winner information, e.g., update the game status or send a notification
-
 def get_winning_meals(user):
-    # Fetch the winning meals from the user's friends' games
-    # Replace the implementation with the actual data fetching logic
-    winning_meals = [
-        # Example meal data
-        {"title": "Meal 1", "image_url": "path/to/image1.jpg"},
-        {"title": "Meal 2", "image_url": "path/to/image2.jpg"},
-    ]
-    return winning_meals
-
-@app.route('/fetch_more_meals')
-@login_required
-def fetch_more_meals():
-    # Fetch more winning meals from the user's friends' games
-    # You can implement pagination or other logic to fetch the next set of meals
-    more_meals = get_winning_meals(current_user)
-
-    # Render the meals as an HTML string to be appended to the meal container
+    # Placeholder: Fetch winning meals (not relevant for this test)
+    return []
 
 if __name__ == '__main__':
+    # Create the instance directory if it doesn't exist
+    instance_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
+    if not os.path.exists(instance_dir):
+        os.makedirs(instance_dir)
     app.run(debug=True)

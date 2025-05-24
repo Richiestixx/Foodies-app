@@ -1,0 +1,27 @@
+ * Serving Flask app 'app.py'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.2:5000
+Press CTRL+C to quit
+127.0.0.1 - - [24/May/2025 17:17:09] "POST /signup HTTP/1.1" 302 -
+127.0.0.1 - - [24/May/2025 17:17:10] "POST /login HTTP/1.1" 302 -
+127.0.0.1 - - [24/May/2025 17:17:10] "GET /dashboard HTTP/1.1" 200 -
+[2025-05-24 17:17:10,381] ERROR in app: Exception on /submit_photo [POST]
+Traceback (most recent call last):
+  File "/home/jules/.local/lib/python3.10/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/jules/.local/lib/python3.10/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/jules/.local/lib/python3.10/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/jules/.local/lib/python3.10/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/home/jules/.local/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/app/app.py", line 188, in submit_photo
+    winner = compare_meals(food_items, OPPONENT_MEAL_DATA["food_items"])
+NameError: name 'compare_meals' is not defined
+127.0.0.1 - - [24/May/2025 17:17:10] "POST /submit_photo HTTP/1.1" 500 -
+127.0.0.1 - - [24/May/2025 17:17:10] "GET /comparison_result HTTP/1.1" 200 -
