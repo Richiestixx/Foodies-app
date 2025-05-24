@@ -1,83 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Foodies</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  <form action="{{ url_for('signup') }}" method="post">
-<div>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-</div>
-<div>
-    <label for="email">Email:</label>
-    {% if error %}
-  <div class="alert alert-danger">{{ error }}</div>
-{% endif %}
-    <input type="email" id="email" name="email" required>
-</div>
-         <label for="age">Age:</label>
-         <input type="number" id="age" name="age" required>
-     </div>
-     <div>
-         <label for="gender">Gender:</label>
-         <select id="gender" name="gender" required>
-             <option value="">Select Gender</option>
-             <option value="male">Male</option>
-             <option value="female">Female</option>
-             <option value="other">Other</option>
-         </select>
-     </div>
-     <div>
-         <label for="weight">Weight (kg):</label>
-         <input type="number" id="weight" name="weight" required>
-     </div>
-     <div>
-         <label for="height">Height (cm):</label>
-         <input type="number" id="height" name="height" required>
-     </div>
-     <div>
-         <label for="activity_level">Activity Level:</label>
-         <select id="activity_level" name="activity_level" required>
-             <option value="">Select Activity Level</option>
-             <option value="sedentary">Sedentary</option>
-             <option value="lightly_active">Lightly Active</option>
-             <option value="moderately_active">Moderately Active</option>
-             <option value="very_active">Very Active</option>
-             <option value="extra_active">Extra Active</option>
-         </select>
-     </div>
-     <div>
-         <label for="dietary_preferences">Dietary Preferences:</label>
-         <select id="dietary_preferences" name="dietary_preferences" required>
-             <option value="">Select Dietary Preferences</option>
-             <option value="vegan">Vegan</option>
-             <option value="vegetarian">Vegetarian</option>
-             <option value="pescatarian">Pescatarian</option>
-             <option value="omnivore">Omnivore</option>
-         </select>
-     </div>
-     <div>
-         <label for="goal">Goal:</label>
-         <select id="goal" name="goal" required>
-             <option value="">Select Goal</option>
-             <option value="lose_weight">Lose Weight</option>
-             <option value="gain_weight">Gain Weight</option>
-             <option value="maintain_weight">Maintain Weight</option>
-             <option value="focus_on_food_groups">Focus on Certain Food Groups</option>
-         </select>
-     </div>
-  <button type="submit" class="btn btn-success">Get Started</button>
-</form>
+{% extends "base.html" %}
 
-<div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+{% block title %}Sign Up - Foodies{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title text-center">Create Your Foodies Account</h1>
+                </div>
+                <div class="card-body">
+                    {# Display Flashed Messages #}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    {# Display error passed from route (if any) #}
+                    {% if error %}
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ error }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                    {% endif %}
+
+                    <form action="{{ url_for('signup') }}" method="post">
+                        {# ----- Personal Information ----- #}
+                        <h5 class="mt-3">Personal Information</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Full Name*</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ name or '' }}" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email Address*</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ email or '' }}" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="password">Password*</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="confirm_password">Confirm Password*</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="age">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" value="{{ age or '' }}" placeholder="Your age (optional)">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" class="form-control">
+                                    <option value="">Select Gender (optional)</option>
+                                    <option value="male" {% if gender == 'male' %}selected{% endif %}>Male</option>
+                                    <option value="female" {% if gender == 'female' %}selected{% endif %}>Female</option>
+                                    <option value="other" {% if gender == 'other' %}selected{% endif %}>Other</option>
+                                    <option value="prefer_not_to_say" {% if gender == 'prefer_not_to_say' %}selected{% endif %}>Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {# ----- Health & Lifestyle Information ----- #}
+                        <h5 class="mt-4">Health & Lifestyle (Optional)</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="weight">Weight (kg)</label>
+                                <input type="number" step="0.1" class="form-control" id="weight" name="weight" value="{{ weight_kg or '' }}" placeholder="e.g., 70.5">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="height">Height (cm)</label>
+                                <input type="number" step="0.1" class="form-control" id="height" name="height" value="{{ height_cm or '' }}" placeholder="e.g., 175">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activity_level">Activity Level</label>
+                            <select id="activity_level" name="activity_level" class="form-control">
+                                <option value="">Select Activity Level (optional)</option>
+                                <option value="sedentary" {% if activity_level == 'sedentary' %}selected{% endif %}>Sedentary (little or no exercise)</option>
+                                <option value="lightly_active" {% if activity_level == 'lightly_active' %}selected{% endif %}>Lightly Active (light exercise/sports 1-3 days/week)</option>
+                                <option value="moderately_active" {% if activity_level == 'moderately_active' %}selected{% endif %}>Moderately Active (moderate exercise/sports 3-5 days/week)</option>
+                                <option value="very_active" {% if activity_level == 'very_active' %}selected{% endif %}>Very Active (hard exercise/sports 6-7 days a week)</option>
+                                <option value="extra_active" {% if activity_level == 'extra_active' %}selected{% endif %}>Extra Active (very hard exercise/physical job)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dietary_preferences">Dietary Preferences</label>
+                            <select id="dietary_preferences" name="dietary_preferences" class="form-control">
+                                <option value="">Select Dietary Preferences (optional)</option>
+                                <option value="none" {% if dietary_preferences == 'none' %}selected{% endif %}>None</option>
+                                <option value="vegan" {% if dietary_preferences == 'vegan' %}selected{% endif %}>Vegan</option>
+                                <option value="vegetarian" {% if dietary_preferences == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                                <option value="pescatarian" {% if dietary_preferences == 'pescatarian' %}selected{% endif %}>Pescatarian</option>
+                                <option value="omnivore" {% if dietary_preferences == 'omnivore' %}selected{% endif %}>Omnivore</option>
+                                <option value="gluten_free" {% if dietary_preferences == 'gluten_free' %}selected{% endif %}>Gluten-Free</option>
+                                <option value="keto" {% if dietary_preferences == 'keto' %}selected{% endif %}>Keto</option>
+                                <option value="paleo" {% if dietary_preferences == 'paleo' %}selected{% endif %}>Paleo</option>
+                                </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goal">Primary Goal</label>
+                            <select id="goal" name="goal" class="form-control">
+                                <option value="">Select Goal (optional)</option>
+                                <option value="lose_weight" {% if goal == 'lose_weight' %}selected{% endif %}>Lose Weight</option>
+                                <option value="gain_muscle" {% if goal == 'gain_muscle' %}selected{% endif %}>Gain Muscle</option>
+                                <option value="maintain_weight" {% if goal == 'maintain_weight' %}selected{% endif %}>Maintain Weight</option>
+                                <option value="eat_healthier" {% if goal == 'eat_healthier' %}selected{% endif %}>Eat Healthier</option>
+                                <option value="increase_energy" {% if goal == 'increase_energy' %}selected{% endif %}>Increase Energy</option>
+                                <option value="focus_on_food_groups" {% if goal == 'focus_on_food_groups' %}selected{% endif %}>Focus on Certain Food Groups</option>
+                            </select>
+                        </div>
+                        
+                        <p class="text-muted"><small>* Indicates required field.</small></p>
+
+                        <button type="submit" class="btn btn-success btn-block mt-4">Create Account & Get Started</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p>Already have an account? <a href="{{ url_for('login') }}">Login Here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-</body>
-</html>
+{% endblock %}
